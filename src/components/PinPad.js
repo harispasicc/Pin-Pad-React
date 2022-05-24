@@ -6,13 +6,19 @@ function PinPad() {
   const [okMessage, setOkMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [lockedMessage, setLockedMessage] = useState("");
-  const [waitMessage, setWaitMessage] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
-  const [count, setCount] = useState(0);
+  const [disabledClear, setDisabledClear] = useState(false);
+  const [count, setCount] = useState(1);
 
-  const handlerValueChange = e => {
-    setUserPin(e.target.value);
+  const handlerValueChange = event => {
+    if (userPin.length > 3) {
+      setDisabledButton(true);
+      return;
+    }
+    setUserPin(userPin.concat(event.target.name));
+
+    console.log(userPin);
   };
 
   const enterHandler = () => {
@@ -26,14 +32,15 @@ function PinPad() {
       setOkMessage(false);
     }
 
-    if (count === 2) {
+    if (count === 3) {
       setErrorMessage(false);
       setLockedMessage("LOCKED");
       setDisabled(true);
       setDisabledButton(true);
-    } else {
-      setWaitMessage("Wait for 30s");
-      setDisabled(true);
+      setDisabledClear(true);
+      alert("After 30 seconds you can clear and continue!");
+
+      return;
     }
 
     setCount(count + 1);
@@ -44,13 +51,13 @@ function PinPad() {
     setErrorMessage("");
     setOkMessage("");
     setLockedMessage("");
-    setCount(0);
+    setCount(1);
     setDisabled(false);
   };
 
   setTimeout(() => {
     setDisabledButton(false);
-  }, 30000);
+  }, 40000);
 
   setTimeout(() => {
     setOkMessage("");
@@ -63,7 +70,7 @@ function PinPad() {
 
   return (
     <div className="container">
-      <div className="output">
+      <form className="output">
         {!disabled && (
           <input
             onChange={handlerValueChange}
@@ -76,75 +83,45 @@ function PinPad() {
         {okMessage && <p className="bg-ok">{okMessage}</p>}
         {errorMessage && <p className="bg-error">{errorMessage}</p>}
         {lockedMessage && <p className="bg-locked">{lockedMessage}</p>}
-      </div>
-      <button
-        disabled={disabledButton}
-        id="display"
-        onClick={() => setUserPin(userPin => `${userPin}1`)}
-      >
+      </form>
+      <button name="1" disabled={disabledButton} onClick={handlerValueChange}>
         1
       </button>
-      <button
-        disabled={disabledButton}
-        onClick={() => setUserPin(userPin => `${userPin}2`)}
-      >
+      <button name="2" disabled={disabledButton} onClick={handlerValueChange}>
         2
       </button>
-      <button
-        disabled={disabledButton}
-        onClick={() => setUserPin(userPin => `${userPin}3`)}
-      >
+      <button name="3" disabled={disabledButton} onClick={handlerValueChange}>
         3
       </button>
-      <button
-        disabled={disabledButton}
-        onClick={() => setUserPin(userPin => `${userPin}4`)}
-      >
+      <button name="4" disabled={disabledButton} onClick={handlerValueChange}>
         4
       </button>
-      <button
-        disabled={disabledButton}
-        onClick={() => setUserPin(userPin => `${userPin}5`)}
-      >
+      <button name="5" disabled={disabledButton} onClick={handlerValueChange}>
         5
       </button>
-      <button
-        disabled={disabledButton}
-        onClick={() => setUserPin(userPin => `${userPin}6`)}
-      >
+      <button name="6" disabled={disabledButton} onClick={handlerValueChange}>
         6
       </button>
-      <button
-        disabled={disabledButton}
-        onClick={() => setUserPin(userPin => `${userPin}7`)}
-      >
+      <button name="7" disabled={disabledButton} onClick={handlerValueChange}>
         7
       </button>
-      <button
-        disabled={disabledButton}
-        onClick={() => setUserPin(userPin => `${userPin}8`)}
-      >
+      <button name="8" disabled={disabledButton} onClick={handlerValueChange}>
         8
       </button>
-      <button
-        disabled={disabledButton}
-        onClick={() => setUserPin(userPin => `${userPin}9`)}
-      >
+      <button name="9" disabled={disabledButton} onClick={handlerValueChange}>
         9
       </button>
       <button disabled={disabledButton} onClick={clearHandler}>
         clear
       </button>
-      <button
-        disabled={disabledButton}
-        onClick={() => setUserPin(userPin => `${userPin}9`)}
-      >
+
+      <button name="0" disabled={disabledButton} onClick={handlerValueChange}>
         0
       </button>
       <button disabled={disabledButton} onClick={enterHandler} type="submit">
         enter
       </button>
-      <p>{count}</p>
+      {/* <p>{count}</p> */}
     </div>
   );
 }
