@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function PinPad() {
   const [pin, setPin] = useState("1234");
@@ -8,7 +8,7 @@ function PinPad() {
   const [lockedMessage, setLockedMessage] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(0);
   const [countdownMsg, setCountdownMsg] = useState(false);
 
   const handlerValueChange = event => {
@@ -22,7 +22,7 @@ function PinPad() {
     if (pin === userPin) {
       setOkMessage("OK");
       setUserPin("");
-      setCount(1);
+      setCount(0);
       setDisabled(true);
     } else {
       setErrorMessage("ERROR");
@@ -32,18 +32,6 @@ function PinPad() {
       setOkMessage(false);
       setCount(count + 1);
     }
-
-    if (count === 3) {
-      setErrorMessage(false);
-      setLockedMessage("LOCKED");
-      setDisabledButton(true);
-      setCountdownMsg(true);
-      setUserPin("");
-      setDisabled(true);
-      setCount(count + 1);
-      setCount(1);
-      return;
-    }
   };
 
   const clearHandler = () => {
@@ -51,14 +39,25 @@ function PinPad() {
     setErrorMessage("");
     setOkMessage("");
     setLockedMessage("");
-    setCount(1);
+    setCount(0);
     setDisabled(false);
   };
 
-  setTimeout(() => {
-    setDisabledButton(false);
-    setCountdownMsg(false);
-  }, 35000);
+  useEffect(() => {
+    if (count % 3 === 0 && count !== 0) {
+      setErrorMessage(false);
+      setLockedMessage("LOCKED");
+      setDisabledButton(true);
+      setCountdownMsg(true);
+      setUserPin("");
+      setDisabled(true);
+      setCount(count);
+    }
+    setTimeout(() => {
+      setDisabledButton(false);
+      setCountdownMsg(false);
+    }, 40000);
+  }, [count]);
 
   setTimeout(() => {
     setOkMessage("");
@@ -122,10 +121,10 @@ function PinPad() {
         <button name="0" disabled={disabledButton} onClick={handlerValueChange}>
           0
         </button>
+
         <button disabled={disabledButton} onClick={enterHandler} type="submit">
           enter
         </button>
-        {/* <p>{count}</p> */}
       </div>
     </div>
   );

@@ -1,3 +1,21 @@
+PIN Pad Project
+
+Project Description
+
+PIN Pad is software that runs in the browser and has the functionality to check 4 digit PIN for their correctness. User can point at number from 0 to 9 so that they
+are shown on the PIN Pad screen. The system must check for the 4 digit PIN code correctness. If the PIN code is true, the system shows the meassage "OK" on the screen and if the PIN is false, the message is "ERROR". If a user inputs an incorrect PIN 3 times in a row, the message "LOCKED" is shown, and numbers from 0 to 9 are disabled for 30secs so that the user can not have another attempt for the PIN input.
+
+Project Features:
+
+-PinPad: contains all logic, buttons, messages.
+
+Built With:
+
+-HTML
+-CSS
+-JS
+-React JS
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
