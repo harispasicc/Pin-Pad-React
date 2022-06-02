@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+const pin = "1234";
+
 function PinPad() {
-  const [pin, setPin] = useState("1234");
   const [userPin, setUserPin] = useState("");
   const [okMessage, setOkMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -18,6 +19,24 @@ function PinPad() {
     setUserPin(userPin.concat(event.target.name));
   };
 
+  useEffect(() => {
+    if (count === 3) {
+      setErrorMessage(false);
+      setLockedMessage("LOCKED");
+      setDisabledButton(true);
+      setCountdownMsg(true);
+      setUserPin("");
+      setDisabled(true);
+      setCount(count);
+
+      setTimeout(() => {
+        setDisabledButton(false);
+        setCountdownMsg(false);
+      }, 30000);
+      setCount(0);
+    }
+  }, [count]);
+
   const enterHandler = () => {
     if (pin === userPin) {
       setOkMessage("OK");
@@ -32,6 +51,16 @@ function PinPad() {
       setOkMessage(false);
       setCount(count + 1);
     }
+
+    setTimeout(() => {
+      setOkMessage("");
+      setDisabled(false);
+      setUserPin("");
+      setErrorMessage("");
+      setDisabled(false);
+      setLockedMessage("");
+      setDisabled(false);
+    }, 3000);
   };
 
   const clearHandler = () => {
@@ -39,34 +68,9 @@ function PinPad() {
     setErrorMessage("");
     setOkMessage("");
     setLockedMessage("");
-    setCount(0);
+    setCount(count);
     setDisabled(false);
   };
-
-  useEffect(() => {
-    if (count % 3 === 0 && count !== 0) {
-      setErrorMessage(false);
-      setLockedMessage("LOCKED");
-      setDisabledButton(true);
-      setCountdownMsg(true);
-      setUserPin("");
-      setDisabled(true);
-      setCount(count);
-    }
-    setTimeout(() => {
-      setDisabledButton(false);
-      setCountdownMsg(false);
-    }, 40000);
-  }, [count]);
-
-  setTimeout(() => {
-    setOkMessage("");
-    setDisabled(false);
-    setErrorMessage("");
-    setDisabled(false);
-    setLockedMessage("");
-    setDisabled(false);
-  }, 5000);
 
   return (
     <div className="title">
